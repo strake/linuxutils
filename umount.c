@@ -6,6 +6,7 @@
 
 int main (int argc, char *argu[]) {
 	unsigned long flags = 0;
+	int failed = 0;
 
 	for (int c = 0; c >= 0; c = getopt (argc, argu, "fl")) switch (c) {
 	case 0:	break;
@@ -26,10 +27,10 @@ int main (int argc, char *argu[]) {
 		return 1;
 	}
 	
-	if (umount2 (argu[1], flags) < 0) {
+	for (int ii = 1; ii < argc; ii++) if (umount2 (argu[ii], flags) < 0) {
 		fprintf (stderr, "%s: %s\n", argu[0], strerror (errno));
-		return 1;
+		failed++;
 	}
 	
-	return 0;
+	return failed;
 }
