@@ -1,0 +1,34 @@
+.TH MOUNT 8
+.SH NAME
+mount \- mount filesystems
+.SH SYNOPSIS
+.B mount
+[
+.B -BMR
+]
+.B -t
+.I type
+.B -d
+.I data
+.I source
+.I target
+.SH OPERATION
+Mount filesystem of type
+.I type
+in
+.I source
+at
+.I target
+with argument
+.I data
+.SS FLAGS
+.TP
+.B B
+Bind mode
+.TP
+.B M
+Move mode
+.TP
+.B R
+Deep mode; used with
+.B -B
