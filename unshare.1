@@ -1,0 +1,25 @@
+.TH UNSHARE 1
+.SH NAME
+unshare \- unshare given namespaces
+.SH SYNOPSIS
+.B unshare
+[
+.B -imnu
+]
+.I arg ...
+.SH OPERATION
+Unshare flagged namespaces, then do
+.I args
+.SS FLAGS
+.TP
+.B i
+Unshare IPC
+.TP
+.B m
+Unshare mount
+.TP
+.B n
+Unshare net
+.TP
+.B u
+Unshare UTC
