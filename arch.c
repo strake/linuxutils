@@ -7,7 +7,7 @@ int main (int argc, char *argu[]) {
 	struct utsname utsname;
 
 	if (uname (&utsname) < 0) {
-		fprintf (stderr, "%s :%s\n", argu[0], strerror (errno));
+		fprintf (stderr, "%s: %s\n", argu[0], strerror (errno));
 		return 1;
 	}
 
