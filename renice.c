@@ -16,35 +16,35 @@ static struct {
 	{ 0, -1 }
 };
 
-static void usage(const char *prog)
-{
-	fprintf(stderr,
-		"usage: %s -n priority -p pid ... -u user ... -g pgrp ...\n", prog);
-	exit(1);
+static void usage (const char *prog) {
+	fprintf (stderr,
+	         "usage: %s -n priority -p pid ... -u user ... -g pgrp ...\n", prog);
+	exit (1);
 }
 
-int main(int argc, char **argu)
-{
+int main (int argc, char *argu []) {
 	struct passwd *pwd;
-	const char *prog = *argu;
+	const char *prog;
 	char *endptr = NULL;
 	int idtype, who, prio;
 	int i;
 	int ret = 0;
 
+	prog = argu[0];
+
 	if (argc < 2)
-		usage(prog);
+		usage (prog);
 	argc--;
 	argu++;
 
-	if (strcmp(*argu, "-n"))
-		usage(prog);
+	if (strcmp (argu[0], "-n"))
+		usage (prog);
 	argc--;
 	argu++;
 
-	prio = strtol(*argu, &endptr, 10);
+	prio = strtol (argu[0], &endptr, 10);
 	if (*endptr)
-		usage(prog);
+		usage (prog);
 	argc--;
 	argu++;
 
@@ -52,7 +52,7 @@ int main(int argc, char **argu)
 	idtype = PRIO_PROCESS;
 	for (; argc > 0; argc--, argu++) {
 		for (i = 0; idtypes[i].opt; i++) {
-			if (!strcmp(idtypes[i].opt, *argu)) {
+			if (strcmp (idtypes[i].opt, argu[0]) == 0) {
 				idtype = idtypes[i].idtype;
 				break;
 			}
@@ -62,25 +62,25 @@ int main(int argc, char **argu)
 
 		switch (idtype) {
 		case PRIO_USER:
-			pwd = getpwnam(*argu);
+			pwd = getpwnam (argu[0]);
 			if (!pwd) {
-				fprintf(stderr, "user %s not found, skipping\n", *argu);
+				fprintf (stderr, "user %s not found, skipping\n", argu[0]);
 				continue;
 			}
-			who = pwd->pw_uid;
+			who = pwd -> pw_uid;
 			break;
 		default:
-			who = strtol(*argu, &endptr, 10);
+			who = strtol (argu[0], &endptr, 10);
 			if (*endptr || who < 0) {
-				fprintf(stderr, "invalid value %s\n", *argu);
+				fprintf (stderr, "invalid value %s\n", argu[0]);
 				continue;
 			}
 			break;
 		}
 
-		if (setpriority(idtype, who, prio) == -1) {
-			fprintf(stderr, "failed to set priority for %d: %s\n",
-				who, strerror(errno));
+		if (setpriority (idtype, who, prio) == -1) {
+			fprintf (stderr, "failed to set priority for %d: %s\n",
+			         who, strerror(errno));
 			ret = 1;
 		}
 	}
