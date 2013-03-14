@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-#include "util.h"
 
 enum {
 	SYSLOG_ACTION_READ_ALL = 3,
@@ -47,7 +46,11 @@ int main (int argc, char **argu) {
 		return 1;
 	}
 
-	buf = emalloc (n);
+	buf = malloc (n);
+	if (!buf) {
+	        fprintf (stderr, "%s: failed to allocate memory\n", argu[0]);
+	        return 1;
+        }
 	n = klogctl (SYSLOG_ACTION_READ_ALL, buf, n);
 	if (n < 0 || (write (STDOUT_FILENO, buf, n) != n)) {
 		fprintf (stderr, "%s: %s\n", argu[0],
