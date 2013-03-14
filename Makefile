@@ -1,4 +1,4 @@
-BIN = arch mount umount renice setsid unshare
+BIN = arch dmesg mount umount renice setsid unshare
 SBIN = swapon swapoff
 ABIN = $(BIN) $(SBIN)
 
