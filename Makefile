@@ -2,6 +2,8 @@ BIN = arch dmesg mount umount renice setsid unshare
 SBIN = swapon swapoff
 ABIN = $(BIN) $(SBIN)
 
+SCRIPT = mountpoint.sh
+
 MAN = unshare.1 mount.8 umount.8 swapon.8 swapoff.8
 
 CC ?= cc
@@ -24,6 +26,7 @@ $(x).o:	$(x).c
 install: all
 	mkdir -p $(DESTDIR)/bin
 	cp $(ABIN) $(DESTDIR)/bin/
+	for script in $(SCRIPT); do cp $$script $(DESTDIR)/bin/$$(echo $$script | sed -E 's/\..*$$//'); done
 	chmod a+rx $(DESTDIR)/bin/*
 	mkdir -p $(DESTDIR)/doc/man/man{1,8}
 	for man in $(MAN); do cp $$man $(DESTDIR)/doc/man/man$$(echo $$man | sed -En 's/^.*([0-9])$$/\1/p'); done
